@@ -8,7 +8,7 @@ var app = require("../app");
 var debug = require("debug")("laminastore-admin:server");
 var http = require("http");
 const conn = require("../database");
-const { _port } = require("../config");
+const { _port } = require("../config/env");
 
 /**
  * Get port from environment and store in Express.
