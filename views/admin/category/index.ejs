@@ -1,7 +1,6 @@
 <%- include("../../partials/header.ejs") %> <%- include("../../partials/navbar.ejs") %>
 <%- include("../../partials/sidebar.ejs") %>
 <div class="content-wrapper mt-5">
-  <!-- Content Header (Page header) -->
   <section class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
@@ -15,23 +14,16 @@
           </ol>
         </div>
       </div>
-    </div><!-- /.container-fluid -->
+    </div>
   </section>
-
-  <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
-      <div class="row">
+      <div class="row justify-content-center align-items-center">
         <div class="col-12">
           <%- include("table.ejs") %>
-          <!-- /.card -->
         </div>
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
     </div>
-    <!-- /.container-fluid -->
   </section>
-  <!-- /.content -->
 </div>
 <%- include("../../partials/footer.ejs") %> <%- include("../../partials/js.ejs") %>
