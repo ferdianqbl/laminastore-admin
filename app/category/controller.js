@@ -10,8 +10,6 @@ module.exports = {
         status: alertStatus,
       };
 
-      console.log(alert);
-
       const categories = await Category.find();
       res.render("admin/category", { title: "Category", categories, alert });
     } catch (error) {
@@ -34,6 +32,9 @@ module.exports = {
   create: async (req, res, next) => {
     try {
       const { name } = req.body;
+
+      if (!name) throw new Error("Name cannot be empty");
+
       const category = new Category({ name });
       await category.save();
 
@@ -67,6 +68,9 @@ module.exports = {
     try {
       const { id } = req.params;
       const { name } = req.body;
+
+      if (!name) throw new Error("Name cannot be empty");
+
       const timestamp = Date.now();
       await Category.findByIdAndUpdate(id, {
         name,

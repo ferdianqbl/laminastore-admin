@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-header">
-    <a href="/category/create" class="btn btn-primary"><i class="nav-icon far fa-plus-square mr-2"></i>Add</a>
+    <a href="/nominal/create" class="btn btn-primary"><i class="nav-icon far fa-plus-square mr-2"></i>Add</a>
   </div>
 
   <div class="card-body">
@@ -9,23 +9,27 @@
         <tr>
           <th>No.</th>
           <th>Name</th>
+          <th>Quantity</th>
+          <th>Price</th>
           <th>Time Added or Updated</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <% if(categories.length > 0){ %>
-        <% categories.forEach((item, index)=> { %>
+        <% if(nominals.length > 0){ %>
+        <% nominals.forEach((item, index)=> { %>
         <tr>
           <td><%= index + 1 %></td>
-          <td><%= item.name %></td>
+          <td><%= item.coinName %></td>
+          <td><%= item.coinQuantity %></td>
+          <td><%= item.price %></td>
           <td>
             <%= item.timestamp.toLocaleString('en-GB', {dateStyle:'full', timeStyle:'medium'}) %>
           </td>
           <td>
-            <a href="/category/edit/<%= item._id %>" class="btn btn-outline-warning"><i
+            <a href="/nominal/edit/<%= item._id %>" class="btn btn-outline-warning"><i
                 class="nav-icon fas fa-pencil-alt"></i></a>
-            <form method="POST" action="/category/delete/<%= item._id %>?_method=DELETE" class="d-inline-block">
+            <form method="POST" action="/nominal/delete/<%= item._id %>?_method=DELETE" class="d-inline-block">
               <button type="submit" class="btn btn-outline-danger"><i class="nav-icon fas fa-trash"></i></button>
             </form>
           </td>
@@ -33,7 +37,7 @@
         <% }) %>
         <% } else { %>
         <tr>
-          <td colspan="4" class="text-center">No data</td>
+          <td colspan="6" class="text-center">No data</td>
         </tr>
         <% } %>
       </tbody>
