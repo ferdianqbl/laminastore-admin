@@ -34,7 +34,10 @@ module.exports = {
       const { name } = req.body;
 
       if (!name) throw new Error("Name cannot be empty");
-
+      const isCategoryExist = await Category.find({
+        name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase(),
+      });
+      if (isCategoryExist.length > 0) throw new Error("Category already exist");
       const category = new Category({ name });
       await category.save();
 
@@ -68,8 +71,13 @@ module.exports = {
     try {
       const { id } = req.params;
       const { name } = req.body;
-
       if (!name) throw new Error("Name cannot be empty");
+
+      const isCategoryExist = await Category.find({
+        name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase(),
+      });
+      if (isCategoryExist.length > 0)
+        throw new Error("Category already exist, delete the old one first");
 
       const timestamp = Date.now();
       await Category.findByIdAndUpdate(id, {

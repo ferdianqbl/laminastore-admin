@@ -10,7 +10,7 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="/category">Category</a></li>
+            <li class="breadcrumb-item"><a href="/nominal">Nominal</a></li>
             <li class="breadcrumb-item active">Edit</li>
           </ol>
         </div>
@@ -24,14 +24,28 @@
         <div class="col-12">
           <div class="card card-success">
             <div class="card-header">
-              <h3 class="card-title">Edit Category "<%= category.name %>"</h3>
+              <h3 class="card-title">Edit Nominal "<%= nominal.coinName %>"</h3>
             </div>
-            <form action="/category/edit/<%= category._id %>?_method=PUT" method="POST">
+            <form action="/nominal/edit/<%= nominal._id %>?_method=PUT" method="POST">
               <div class="card-body">
                 <div class="form-group">
-                  <label for="name">Category</label>
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Enter Category" required
-                    autocomplete="off" value="<%= category.name %>">
+                  <label>Coin Name</label>
+                  <select class="form-control select2 w-100" name="coinName" required>
+                    <option disabled>--- Select Coin ---</option>
+                    <option value="Gold" <%= nominal.coinName === "Gold" && "selected" %>>Gold</option>
+                    <option value="Diamond" <%= nominal.coinName === "Diamond" && "selected" %>>Diamond</option>
+                    <option value="Jewel" <%= nominal.coinName === "Jewel" && "selected" %>>Jewel</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="coinQuantity">Quantity</label>
+                  <input type="number" name="coinQuantity" class="form-control" id="coinQuantity"
+                    placeholder="Enter Coin Quantity" required autocomplete="off" value="<%= nominal.coinQuantity %>">
+                </div>
+                <div class="form-group">
+                  <label for="price">Price</label>
+                  <input type="number" name="price" class="form-control" id="price" placeholder="Enter Price" required
+                    autocomplete="off" value="<%= nominal.price %>">
                 </div>
               </div>
               <div class="card-footer">

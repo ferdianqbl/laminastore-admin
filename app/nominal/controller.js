@@ -35,12 +35,81 @@ module.exports = {
       if (!coinQuantity) throw new Error("Coin Quantity cannot be empty");
       if (!price) throw new Error("Price cannot be empty");
 
+      const isNominalExist = await Nominal.find({ coinName, coinQuantity });
+      if (isNominalExist.length > 0)
+        throw new Error(
+          "Nominal already exist with same coin name and coin quantity"
+        );
+
       const nominal = new Nominal({ coinName, coinQuantity, price });
       await nominal.save();
 
       req.flash("alertMessage", "Nominal successfully created");
       req.flash("alertStatus", "success");
 
+      res.redirect("/nominal");
+    } catch (error) {
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/nominal");
+    }
+  },
+
+  viewEdit: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const nominal = await Nominal.findById(id);
+
+      if (!nominal) throw new Error("Nominal not found");
+
+      res.render("admin/nominal/edit", { title: "Edit nominal", nominal });
+    } catch (error) {
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/nominal");
+    }
+  },
+
+  edit: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { coinName, coinQuantity, price } = req.body;
+
+      if (!coinName) throw new Error("Name cannot be empty");
+      if (!coinQuantity) throw new Error("Coin Quantity cannot be empty");
+      if (!price) throw new Error("Price cannot be empty");
+
+      const isNominalExist = await Nominal.find({ coinName, coinQuantity });
+      if (isNominalExist.length > 0)
+        throw new Error(
+          "Nominal already exist with same coin name and coin quantity, delete the old one first"
+        );
+
+      const timestamp = Date.now();
+      await Nominal.findByIdAndUpdate(id, {
+        coinName,
+        coinQuantity,
+        price,
+        timestamp,
+      });
+
+      req.flash("alertMessage", "Nominal successfully updated");
+      req.flash("alertStatus", "success");
+      res.redirect("/nominal");
+    } catch (error) {
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/nominal");
+    }
+  },
+
+  remove: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      await Nominal.findByIdAndDelete(id);
+
+      req.flash("alertMessage", "Nominal successfully deleted");
+      req.flash("alertStatus", "success");
       res.redirect("/nominal");
     } catch (error) {
       req.flash("alertMessage", error.message);
