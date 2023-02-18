@@ -3,10 +3,21 @@ const Category = require("./model");
 module.exports = {
   index: async (req, res, next) => {
     try {
+      const alertMessage = req.flash("alertMessage");
+      const alertStatus = req.flash("alertStatus");
+      const alert = {
+        message: alertMessage,
+        status: alertStatus,
+      };
+
+      console.log(alert);
+
       const categories = await Category.find();
-      res.render("admin/category", { title: "Category", categories });
+      res.render("admin/category", { title: "Category", categories, alert });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/category");
     }
   },
 
@@ -14,7 +25,9 @@ module.exports = {
     try {
       res.render("admin/category/create", { title: "Add Category" });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/category");
     }
   },
 
@@ -23,9 +36,15 @@ module.exports = {
       const { name } = req.body;
       const category = new Category({ name });
       await category.save();
+
+      req.flash("alertMessage", "Category successfully created");
+      req.flash("alertStatus", "success");
+
       res.redirect("/category");
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/category");
     }
   },
 
@@ -34,12 +53,13 @@ module.exports = {
       const { id } = req.params;
       const category = await Category.findById(id);
 
-      if (!category)
-        return res.status(404).json({ error: "Category not found" });
+      if (!category) throw new Error("Category not found");
 
       res.render("admin/category/edit", { title: "Edit Category", category });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/category");
     }
   },
 
@@ -48,31 +68,33 @@ module.exports = {
       const { id } = req.params;
       const { name } = req.body;
       const timestamp = Date.now();
-      const categoryUpdated = await Category.findByIdAndUpdate(id, {
+      await Category.findByIdAndUpdate(id, {
         name,
         timestamp,
       });
 
-      if (!categoryUpdated)
-        return res.status(404).json({ error: "Category not found" });
-
+      req.flash("alertMessage", "Category successfully updated");
+      req.flash("alertStatus", "success");
       res.redirect("/category");
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/category");
     }
   },
 
   remove: async (req, res, next) => {
     try {
       const { id } = req.params;
-      const categoryDeleted = await Category.findByIdAndDelete(id);
+      await Category.findByIdAndDelete(id);
 
-      if (!categoryDeleted)
-        return res.status(404).json({ error: "Category not found" });
-
+      req.flash("alertMessage", "Category successfully deleted");
+      req.flash("alertStatus", "success");
       res.redirect("/category");
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/category");
     }
   },
 };

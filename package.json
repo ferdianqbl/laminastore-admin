@@ -7,11 +7,13 @@
   },
   "dependencies": {
     "admin-lte": "^3.2.0",
+    "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.0.3",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
+    "express-session": "^1.17.3",
     "http-errors": "~1.6.3",
     "method-override": "^3.0.0",
     "mongoose": "^6.9.1",
