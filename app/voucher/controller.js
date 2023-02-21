@@ -51,8 +51,9 @@ module.exports = {
         name,
         category,
         nominals,
-        thumbnail: req.files.length > 0 ?? req.files[0].filename,
       });
+      if (req.files[0].filename) voucher.thumbnail = req.files[0].filename;
+
       await voucher.save();
 
       req.flash("alertMessage", "Voucher successfully created");
