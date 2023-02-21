@@ -1,8 +1,9 @@
 const dotenv = require("dotenv");
-
+const path = require("path");
 dotenv.config();
 
 module.exports = {
+  // rootPath: path.resolve(__dirname, ".."),
   _port: process.env.PORT,
   database: {
     url: process.env.DB_URL,
