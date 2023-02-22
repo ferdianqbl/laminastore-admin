@@ -13,6 +13,7 @@ const voucherSchema = new mongoose.Schema({
   },
   thumbnail: {
     type: String,
+    default: null,
   },
   category: {
     type: Schema.Types.ObjectId,

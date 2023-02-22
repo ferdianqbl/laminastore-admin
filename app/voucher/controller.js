@@ -52,7 +52,7 @@ module.exports = {
         category,
         nominals,
       });
-      if (req.files[0].filename) voucher.thumbnail = req.files[0].filename;
+      if (req.file) voucher.thumbnail = req.file.filename;
 
       await voucher.save();
 
