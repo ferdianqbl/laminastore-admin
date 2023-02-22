@@ -63,7 +63,7 @@ include("../../partials/sidebar.ejs") %>
                     <input type="file" class="custom-file-input" id="thumbnail" name="thumbnail">
                     <label class="custom-file-label" for="thumbnail">Choose file</label>
                   </div>
-                  <img src="" alt="" id="preview" width="220" height="320" hidden>
+                  <img src="" alt="" id="preview" hidden>
                 </div>
               </div>
               <div class="card-footer">
@@ -86,6 +86,8 @@ include("../../partials/sidebar.ejs") %>
         $(".custom-file-label").html(input.files[0].name);
         $('#preview').removeAttr('hidden');
         $('#preview').attr('src', e.target.result);
+        $('#preview').attr('width', '220');
+        $('#preview').attr('height', '320');
       }
       reader.readAsDataURL(input.files[0]);
     }

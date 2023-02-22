@@ -3,12 +3,15 @@
     <a href="/voucher/create" class="btn btn-primary"><i class="nav-icon far fa-plus-square mr-2"></i>Add</a>
   </div>
 
-  <!-- <div class="card-body">
-    <table id="example2" class="table table-bordered table-striped table-hover">
+  <div class="card-body">
+    <table id="example2" class="table table-bordered table-striped table-hover w-100">
       <thead>
         <tr>
           <th>No.</th>
-          <th>Name</th>
+          <th>Game</th>
+          <th>Category</th>
+          <th>Nominal</th>
+          <th>Status</th>
           <th>Time Added or Updated</th>
           <th>Actions</th>
         </tr>
@@ -19,14 +22,30 @@
         <tr>
           <td><%= index + 1 %></td>
           <td><%= item.name %></td>
+          <td><%= item?.category?.name ?? '-' %></td>
+          <td>
+            <% item.nominals.forEach(nominal => { %>
+            <span class="badge badge-info"><%= nominal.coinName %> - <%= nominal.coinQuantity %>
+              <%=(nominal.price) %></span>
+            <% }) %>
+          </td>
+          <td>
+            <span class="badge badge-<%= item.status === "active" ? "success" : "danger" %>"><%= item.status %></span>
+          </td>
           <td>
             <%= item.timestamp.toLocaleString('en-GB', {dateStyle:'full', timeStyle:'medium'}) %>
           </td>
-          <td>
-            <a href="/category/edit/<%= item._id %>" class="btn btn-outline-warning"><i
-                class="nav-icon fas fa-pencil-alt"></i></a>
-            <form method="POST" action="/category/delete/<%= item._id %>?_method=DELETE" class="d-inline-block">
-              <button type="submit" class="btn btn-outline-danger"><i class="nav-icon fas fa-trash"></i></button>
+          <td class="d-flex flex-wrap">
+            <form method="" action="" class="d-inline-block m-1">
+              <button type="submit" class="btn btn-sm btn-outline-warning"><i class="nav-icon fas fa-trash"></i>
+                <%= item.status === "active" ? "Inactivate" : "Activate" %>
+              </button>
+            </form>
+            <a href="/voucher/edit/<%= item._id %>" class="btn btn-sm btn-outline-info d-inline-block m-1"><i
+                class="nav-icon fas fa-pencil-alt"></i> Edit</a>
+            <form method="POST" action="/voucher/delete/<%= item._id %>?_method=DELETE" class="d-inline-block m-1">
+              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="nav-icon fas fa-trash"></i>
+                Delete</button>
             </form>
           </td>
         </tr>
@@ -38,6 +57,6 @@
         <% } %>
       </tbody>
     </table>
-  </div> -->
+  </div>
 
 </div>

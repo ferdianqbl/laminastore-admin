@@ -12,7 +12,10 @@ module.exports = {
         status: alertStatus,
       };
 
-      const vouchers = await Voucher.find();
+      const vouchers = await Voucher.find()
+        .populate("category", "name")
+        .populate("nominals", "coinName coinQuantity price");
+
       res.render("admin/voucher", { title: "Voucher", vouchers, alert });
     } catch (error) {
       req.flash("alertMessage", error.message);
@@ -44,7 +47,7 @@ module.exports = {
       const { name, category, nominals } = req.body;
 
       if (!name) throw new Error("Name cannot be empty");
-      if (!category) throw new Error("Category cannot be empty");
+      // if (!category) throw new Error("Category cannot be empty");
       if (!nominals) throw new Error("Nominal cannot be empty");
 
       const voucher = await Voucher.create({
