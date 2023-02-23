@@ -48,18 +48,18 @@ module.exports = {
       res.redirect("/bank");
     }
   },
-  // viewEdit: async (req, res, next) => {
-  //   try {
-  //     const { id } = req.params;
-  //     const category = await Category.findById(id);
-  //     if (!category) throw new Error("Category not found");
-  //     res.render("admin/category/edit", { title: "Edit Category", category });
-  //   } catch (error) {
-  //     req.flash("alertMessage", error.message);
-  //     req.flash("alertStatus", "danger");
-  //     res.redirect("/category");
-  //   }
-  // },
+  viewEdit: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const bank = await Bank.findById(id);
+      if (!bank) throw new Error("Bank not found");
+      res.render("admin/bank/edit", { title: "Edit bank", bank });
+    } catch (error) {
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/bank");
+    }
+  },
   // edit: async (req, res, next) => {
   //   try {
   //     const { id } = req.params;

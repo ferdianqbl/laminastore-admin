@@ -10,7 +10,7 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="/category">Category</a></li>
+            <li class="breadcrumb-item"><a href="/bank">Bank</a></li>
             <li class="breadcrumb-item active">Edit</li>
           </ol>
         </div>
@@ -24,14 +24,24 @@
         <div class="col-12">
           <div class="card card-success">
             <div class="card-header">
-              <h3 class="card-title">Edit Category "<%= category.name %>"</h3>
+              <h3 class="card-title">Edit Bank "<%= bank.owner %> | <%= bank.bankName %>"</h3>
             </div>
-            <form action="/category/edit/<%= category._id %>?_method=PUT" method="POST">
+            <form action="/bank/edit/<%= bank._id %>?_method=PUT" method="POST">
               <div class="card-body">
                 <div class="form-group">
-                  <label for="name">Category</label>
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Enter Category" required
-                    autocomplete="off" value="<%= category.name %>">
+                  <label for="owner">Owner</label>
+                  <input type="text" name="owner" class="form-control" id="owner" placeholder="Enter Owner" required
+                    autocomplete="off" value="<%= bank.owner %>">
+                </div>
+                <div class="form-group">
+                  <label for="bankName">Bank Name</label>
+                  <input type="text" name="bankName" class="form-control" id="bankName" placeholder="Enter Bank Name"
+                    required autocomplete="off" value="<%= bank.bankName %>">
+                </div>
+                <div class="form-group">
+                  <label for="accountNumber">Account Number</label>
+                  <input type="number" name="accountNumber" class="form-control" id="accountNumber"
+                    placeholder="Enter Account Number" required autocomplete="off" value="<%= bank.accountNumber %>">
                 </div>
               </div>
               <div class="card-footer">
