@@ -2,7 +2,7 @@ const express = require("express");
 const {
   index,
   viewCreate,
-  // create,
+  create,
   // viewEdit,
   // edit,
   // remove,
@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get("/", index);
 router.get("/create", viewCreate);
-// router.post("/create", create);
+router.post("/create", create);
 // router.get("/edit/:id", viewEdit);
 // router.put("/edit/:id", edit);
 // router.delete("/delete/:id", remove);
