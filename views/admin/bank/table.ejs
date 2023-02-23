@@ -1,0 +1,48 @@
+<div class="card">
+  <div class="card-header">
+    <a href="/bank/create" class="btn btn-primary"><i class="nav-icon far fa-plus-square mr-2"></i>Add</a>
+  </div>
+
+  <div class="card-body">
+    <table id="example2" class="table table-bordered table-striped table-hover">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Owner</th>
+          <th>Bank Name</th>
+          <th>Account Number</th>
+          <th>Time Added or Updated</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if(banks.length > 0){ %>
+        <% banks.forEach((item, index)=> { %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= item.name %></td>
+          <td><%= item.bankName %></td>
+          <td><%= item.accountNumber %></td>
+          <td>
+            <%= item.timestamp.toLocaleString('en-GB', {dateStyle:'full', timeStyle:'medium'}) %>
+          </td>
+          <td class="d-flex flex-wrap">
+            <a href="/bank/edit/<%= item._id %>" class="btn btn-sm btn-outline-info d-inline-block m-1"><i
+                class="nav-icon fas fa-pencil-alt"></i> Edit</a>
+            <form method="POST" action="/bank/delete/<%= item._id %>?_method=DELETE" class="d-inline-block m-1">
+              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="nav-icon fas fa-trash"></i>
+                Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+        <% } else { %>
+        <tr>
+          <td colspan="6" class="text-center">No data</td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+
+</div>
