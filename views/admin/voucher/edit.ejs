@@ -10,7 +10,7 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="/category">Category</a></li>
+            <li class="breadcrumb-item"><a href="/voucher">Voucher</a></li>
             <li class="breadcrumb-item active">Edit</li>
           </ol>
         </div>
@@ -24,18 +24,53 @@
         <div class="col-12">
           <div class="card card-success">
             <div class="card-header">
-              <h3 class="card-title">Edit Category "<%= category.name %>"</h3>
+              <h3 class="card-title">Edit Voucher "<%= voucher.name %>"</h3>
             </div>
-            <form action="/category/edit/<%= category._id %>?_method=PUT" method="POST">
+            <form action="/voucher/edit/<%= voucher._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
               <div class="card-body">
                 <div class="form-group">
-                  <label for="name">Category</label>
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Enter Category" required
-                    autocomplete="off" value="<%= category.name %>">
+                  <label for="name">Game Name</label>
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Enter Game Name" required
+                    autocomplete="off" value="<%= voucher.name %>" />
+                </div>
+                <div class="form-group">
+                  <label>Category</label>
+
+                  <select class="form-control select2 w-100" name="category" required>
+                    <option <%= voucher?.category?._id ?? "selected" %> disabled>
+                      --- Select Category ---
+                    </option>
+                    <% categories.forEach(item => { %>
+                    <option value="<%= item._id %>"
+                      <%= voucher?.category?._id.toString() === item._id.toString() && "selected" %>>
+                      <%= item.name %></option>
+                    <% }) %>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Nominal</label>
+                  <div class="select2-purple">
+                    <select class="form-control select2 w-100" name="nominals" multiple required
+                      data-placeholder="Select Nominal">
+                      <% nominals.forEach(item => { %>
+                      <option value="<%= item._id %>" <% voucher.nominals.forEach(nominal => { %>
+                        <%= nominal._id.toString() === item._id.toString() && "selected" %> <% }) %>>
+                        <%= item.coinName %> <%= item.coinQuantity %> (<%= item.price %>)
+                      </option>
+                      <% }) %>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="custom-file mb-3">
+                    <input type="file" class="custom-file-input" id="thumbnail" name="thumbnail">
+                    <label class="custom-file-label" for="thumbnail"><%= voucher.thumbnail ?? "Select File" %></label>
+                  </div>
+                  <img src="http://localhost:8000/uploads/voucher/<%= voucher.thumbnail %>" alt="" id="preview">
                 </div>
               </div>
               <div class="card-footer">
-                <button type="submit" class="btn btn-success">Edit</button>
+                <button type="submit" class="btn btn-primary">Edit</button>
               </div>
             </form>
           </div>
@@ -45,3 +80,20 @@
   </section>
 </div>
 <%- include("../../partials/footer.ejs") %> <%- include("../../partials/js.ejs") %>
+<script>
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        $(".custom-file-label").html(input.files[0].name);
+        $('#preview').attr('src', e.target.result);
+        $('#preview').attr('width', '220');
+        $('#preview').attr('height', '320');
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+  $('#thumbnail').change(function () {
+    readURL(this);
+  });
+</script>

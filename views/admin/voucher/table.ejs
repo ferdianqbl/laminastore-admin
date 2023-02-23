@@ -11,6 +11,7 @@
           <th>Game</th>
           <th>Category</th>
           <th>Nominal</th>
+          <th>Image</th>
           <th>Status</th>
           <th>Time Added or Updated</th>
           <th>Actions</th>
@@ -29,6 +30,7 @@
               <%=(nominal.price) %></span>
             <% }) %>
           </td>
+          <td><img src="/uploads/voucher/<%= item?.thumbnail ?? '-' %>" alt="" width="90" height="160"></td>
           <td>
             <span class="badge badge-<%= item.status === "active" ? "success" : "danger" %>"><%= item.status %></span>
           </td>
@@ -36,7 +38,7 @@
             <%= item.timestamp.toLocaleString('en-GB', {dateStyle:'full', timeStyle:'medium'}) %>
           </td>
           <td class="d-flex flex-wrap">
-            <form method="" action="" class="d-inline-block m-1">
+            <form method="POST" action="/voucher/status/<%= item._id %>?_method=PUT" class="d-inline-block m-1">
               <button type="submit" class="btn btn-sm btn-outline-warning"><i class="nav-icon fas fa-trash"></i>
                 <%= item.status === "active" ? "Inactivate" : "Activate" %>
               </button>

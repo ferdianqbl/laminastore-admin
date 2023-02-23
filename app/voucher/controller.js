@@ -2,6 +2,9 @@ const Voucher = require("./model");
 const Category = require("../category/model");
 const Nominal = require("../nominal/model");
 
+const { unlinkSync, existsSync } = require("fs");
+const { rootPath } = require("../../config/env");
+
 module.exports = {
   index: async (req, res, next) => {
     try {
@@ -47,7 +50,7 @@ module.exports = {
       const { name, category, nominals } = req.body;
 
       if (!name) throw new Error("Name cannot be empty");
-      // if (!category) throw new Error("Category cannot be empty");
+      if (!category) throw new Error("Category cannot be empty");
       if (!nominals) throw new Error("Nominal cannot be empty");
 
       const voucher = await Voucher.create({
@@ -70,66 +73,102 @@ module.exports = {
     }
   },
 
-  // viewEdit: async (req, res, next) => {
-  //   try {
-  //     const { id } = req.params;
-  //     const nominal = await Nominal.findById(id);
+  viewEdit: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const voucher = await Voucher.findById(id)
+        .populate("category", "name")
+        .populate("nominals", "coinName coinQuantity price");
+      const categories = await Category.find();
+      const nominals = await Nominal.find();
 
-  //     if (!nominal) throw new Error("Nominal not found");
+      if (!voucher) throw new Error("Voucher not found");
 
-  //     res.render("admin/nominal/edit", { title: "Edit nominal", nominal });
-  //   } catch (error) {
-  //     req.flash("alertMessage", error.message);
-  //     req.flash("alertStatus", "danger");
-  //     res.redirect("/nominal");
-  //   }
-  // },
+      res.render("admin/voucher/edit", {
+        title: "Edit Voucher",
+        voucher,
+        categories,
+        nominals,
+      });
+    } catch (error) {
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/voucher");
+    }
+  },
 
-  // edit: async (req, res, next) => {
-  //   try {
-  //     const { id } = req.params;
-  //     const { coinName, coinQuantity, price } = req.body;
+  edit: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { name, category, nominals } = req.body;
+      console.log(req.body);
+      if (!name) throw new Error("Name cannot be empty");
+      if (!category) throw new Error("Category cannot be empty");
+      if (!nominals) throw new Error("Nominal cannot be empty");
 
-  //     if (!coinName) throw new Error("Name cannot be empty");
-  //     if (!coinQuantity) throw new Error("Coin Quantity cannot be empty");
-  //     if (!price) throw new Error("Price cannot be empty");
+      const voucher = await Voucher.findById(id);
 
-  //     const isNominalExist = await Nominal.find({ coinName, coinQuantity });
-  //     if (isNominalExist.length > 0)
-  //       throw new Error(
-  //         "Nominal already exist with same coin name and coin quantity, delete the old one first"
-  //       );
+      if (req.file) {
+        if (
+          existsSync(`${rootPath}/public/uploads/voucher/${voucher.thumbnail}`)
+        )
+          unlinkSync(`${rootPath}/public/uploads/voucher/${voucher.thumbnail}`);
+        voucher.thumbnail = req.file.filename;
+      }
 
-  //     const timestamp = Date.now();
-  //     await Nominal.findByIdAndUpdate(id, {
-  //       coinName,
-  //       coinQuantity,
-  //       price,
-  //       timestamp,
-  //     });
+      voucher.name = name;
+      voucher.category = category;
+      voucher.nominals = nominals;
+      voucher.timestamp = Date.now();
+      await voucher.save();
 
-  //     req.flash("alertMessage", "Nominal successfully updated");
-  //     req.flash("alertStatus", "success");
-  //     res.redirect("/nominal");
-  //   } catch (error) {
-  //     req.flash("alertMessage", error.message);
-  //     req.flash("alertStatus", "danger");
-  //     res.redirect("/nominal");
-  //   }
-  // },
+      req.flash("alertMessage", "Voucher successfully updated");
+      req.flash("alertStatus", "success");
+      res.redirect("/voucher");
+    } catch (error) {
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/voucher");
+    }
+  },
 
-  // remove: async (req, res, next) => {
-  //   try {
-  //     const { id } = req.params;
-  //     await Nominal.findByIdAndDelete(id);
+  remove: async (req, res, next) => {
+    try {
+      const { id } = req.params;
 
-  //     req.flash("alertMessage", "Nominal successfully deleted");
-  //     req.flash("alertStatus", "success");
-  //     res.redirect("/nominal");
-  //   } catch (error) {
-  //     req.flash("alertMessage", error.message);
-  //     req.flash("alertStatus", "danger");
-  //     res.redirect("/nominal");
-  //   }
-  // },
+      const voucher = await Voucher.findByIdAndRemove(id);
+
+      if (existsSync(`${rootPath}/public/uploads/voucher/${voucher.thumbnail}`))
+        unlinkSync(`${rootPath}/public/uploads/voucher/${voucher.thumbnail}`);
+
+      req.flash("alertMessage", "Voucher successfully deleted");
+      req.flash("alertStatus", "success");
+      res.redirect("/voucher");
+    } catch (error) {
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/voucher");
+    }
+  },
+
+  status: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+
+      const voucher = await Voucher.findById(id);
+
+      const status = voucher.status === "active" ? "inactive" : "active";
+
+      voucher.status = status;
+      await voucher.save();
+
+      await req.flash("alertMessage", "Voucher Status successfully updated");
+      req.flash("alertStatus", "success");
+      res.redirect("/voucher");
+    } catch (error) {
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/voucher");
+    }
+  },
 };
