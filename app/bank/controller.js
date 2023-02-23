@@ -84,17 +84,17 @@ module.exports = {
       res.redirect("/bank");
     }
   },
-  // remove: async (req, res, next) => {
-  //   try {
-  //     const { id } = req.params;
-  //     await Category.findByIdAndDelete(id);
-  //     req.flash("alertMessage", "Category successfully deleted");
-  //     req.flash("alertStatus", "success");
-  //     res.redirect("/category");
-  //   } catch (error) {
-  //     req.flash("alertMessage", error.message);
-  //     req.flash("alertStatus", "danger");
-  //     res.redirect("/category");
-  //   }
-  // },
+  remove: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      await Bank.findByIdAndDelete(id);
+      req.flash("alertMessage", "Bank successfully deleted");
+      req.flash("alertStatus", "success");
+      res.redirect("/bank");
+    } catch (error) {
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/bank");
+    }
+  },
 };
