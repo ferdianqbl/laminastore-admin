@@ -60,30 +60,30 @@ module.exports = {
       res.redirect("/bank");
     }
   },
-  // edit: async (req, res, next) => {
-  //   try {
-  //     const { id } = req.params;
-  //     const { name } = req.body;
-  //     if (!name) throw new Error("Name cannot be empty");
-  //     const isCategoryExist = await Category.find({
-  //       name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase(),
-  //     });
-  //     if (isCategoryExist.length > 0)
-  //       throw new Error("Category already exist, delete the old one first");
-  //     const timestamp = Date.now();
-  //     await Category.findByIdAndUpdate(id, {
-  //       name,
-  //       timestamp,
-  //     });
-  //     req.flash("alertMessage", "Category successfully updated");
-  //     req.flash("alertStatus", "success");
-  //     res.redirect("/category");
-  //   } catch (error) {
-  //     req.flash("alertMessage", error.message);
-  //     req.flash("alertStatus", "danger");
-  //     res.redirect("/category");
-  //   }
-  // },
+  edit: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { owner, bankName, accountNumber } = req.body;
+
+      if (!owner) throw new Error("Owner cannot be empty");
+      if (!bankName) throw new Error("Bank name cannot be empty");
+      if (!accountNumber) throw new Error("Account number cannot be empty");
+
+      await Bank.findByIdAndUpdate(id, {
+        owner,
+        bankName,
+        accountNumber,
+        timestamp: Date.now(),
+      });
+      req.flash("alertMessage", "Bank successfully updated");
+      req.flash("alertStatus", "success");
+      res.redirect("/bank");
+    } catch (error) {
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/bank");
+    }
+  },
   // remove: async (req, res, next) => {
   //   try {
   //     const { id } = req.params;
