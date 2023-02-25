@@ -11,7 +11,12 @@ module.exports = {
       };
 
       const categories = await Category.find();
-      res.render("admin/category", { title: "Category", categories, alert });
+      res.render("admin/category", {
+        title: "Category",
+        categories,
+        alert,
+        username: req.session.user.username,
+      });
     } catch (error) {
       req.flash("alertMessage", error.message);
       req.flash("alertStatus", "danger");
@@ -21,7 +26,10 @@ module.exports = {
 
   viewCreate: async (req, res, next) => {
     try {
-      res.render("admin/category/create", { title: "Add Category" });
+      res.render("admin/category/create", {
+        title: "Add Category",
+        username: req.session.user.username,
+      });
     } catch (error) {
       req.flash("alertMessage", error.message);
       req.flash("alertStatus", "danger");
@@ -59,7 +67,11 @@ module.exports = {
 
       if (!category) throw new Error("Category not found");
 
-      res.render("admin/category/edit", { title: "Edit Category", category });
+      res.render("admin/category/edit", {
+        title: "Edit Category",
+        category,
+        username: req.session.user.username,
+      });
     } catch (error) {
       req.flash("alertMessage", error.message);
       req.flash("alertStatus", "danger");

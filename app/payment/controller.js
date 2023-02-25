@@ -15,7 +15,12 @@ module.exports = {
         "banks",
         "owner bankName accountNumber"
       );
-      res.render("admin/payment", { title: "Payment", payments, alert });
+      res.render("admin/payment", {
+        title: "Payment",
+        payments,
+        alert,
+        username: req.session.user.username,
+      });
     } catch (error) {
       req.flash("alertMessage", error.message);
       req.flash("alertStatus", "danger");
@@ -26,7 +31,11 @@ module.exports = {
   viewCreate: async (req, res, next) => {
     try {
       const banks = await Bank.find();
-      res.render("admin/payment/create", { title: "Add Payment", banks });
+      res.render("admin/payment/create", {
+        title: "Add Payment",
+        banks,
+        username: req.session.user.username,
+      });
     } catch (error) {
       req.flash("alertMessage", error.message);
       req.flash("alertStatus", "danger");
@@ -73,6 +82,7 @@ module.exports = {
         title: "Edit Payment",
         payment,
         banks,
+        username: req.session.user.username,
       });
     } catch (error) {
       req.flash("alertMessage", error.message);

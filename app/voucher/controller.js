@@ -19,7 +19,12 @@ module.exports = {
         .populate("category", "name")
         .populate("nominals", "coinName coinQuantity price");
 
-      res.render("admin/voucher", { title: "Voucher", vouchers, alert });
+      res.render("admin/voucher", {
+        title: "Voucher",
+        vouchers,
+        alert,
+        username: req.session.user.username,
+      });
     } catch (error) {
       req.flash("alertMessage", error.message);
       req.flash("alertStatus", "danger");
@@ -38,6 +43,7 @@ module.exports = {
         title: "Add Voucher",
         categories,
         nominals,
+        username: req.session.user.username,
       });
     } catch (error) {
       req.flash("alertMessage", error.message);
@@ -89,6 +95,7 @@ module.exports = {
         voucher,
         categories,
         nominals,
+        username: req.session.user.username,
       });
     } catch (error) {
       req.flash("alertMessage", error.message);

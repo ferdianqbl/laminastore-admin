@@ -10,7 +10,12 @@ module.exports = {
         status: alertStatus,
       };
       const banks = await Bank.find();
-      res.render("admin/bank", { title: "Bank", banks, alert });
+      res.render("admin/bank", {
+        title: "Bank",
+        banks,
+        alert,
+        username: req.session.user.username,
+      });
     } catch (error) {
       req.flash("alertMessage", error.message);
       req.flash("alertStatus", "danger");
@@ -19,7 +24,10 @@ module.exports = {
   },
   viewCreate: async (req, res, next) => {
     try {
-      res.render("admin/bank/create", { title: "Add Bank" });
+      res.render("admin/bank/create", {
+        title: "Add Bank",
+        username: req.session.user.username,
+      });
     } catch (error) {
       req.flash("alertMessage", error.message);
       req.flash("alertStatus", "danger");
@@ -53,7 +61,11 @@ module.exports = {
       const { id } = req.params;
       const bank = await Bank.findById(id);
       if (!bank) throw new Error("Bank not found");
-      res.render("admin/bank/edit", { title: "Edit bank", bank });
+      res.render("admin/bank/edit", {
+        title: "Edit bank",
+        bank,
+        username: req.session.user.username,
+      });
     } catch (error) {
       req.flash("alertMessage", error.message);
       req.flash("alertStatus", "danger");
