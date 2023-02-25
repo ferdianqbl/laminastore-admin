@@ -1,3 +1,6 @@
+const User = require("./model");
+const bcrypt = require("bcrypt");
+
 module.exports = {
   viewLogin: async (req, res, next) => {
     try {
@@ -9,6 +12,24 @@ module.exports = {
       };
 
       res.render("admin/user/login", { title: "Login", alert });
+    } catch (error) {
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/");
+    }
+  },
+  login: async (req, res, next) => {
+    try {
+      const { email, password } = req.body;
+      const user = await User.findOne({ email });
+
+      if (!user) throw new Error("User not found");
+      if (user.status === "N") throw new Error("User not active");
+
+      const isPasswordMatch = await bcrypt.compare(password, user.password);
+      if (!isPasswordMatch) throw new Error("Password incorrect");
+
+      res.redirect("/dashboard");
     } catch (error) {
       req.flash("alertMessage", error.message);
       req.flash("alertStatus", "danger");
