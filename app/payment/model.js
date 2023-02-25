@@ -11,10 +11,12 @@ const paymentSchema = new mongoose.Schema({
     enum: ["active", "inactive"],
     default: "active",
   },
-  bank: {
-    type: Schema.Types.ObjectId,
-    ref: "Bank",
-  },
+  banks: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Bank",
+    },
+  ],
   timestamp: {
     type: Date,
     default: Date.now,

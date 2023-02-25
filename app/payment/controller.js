@@ -1,4 +1,5 @@
 const Payment = require("./model");
+const Bank = require("../bank/model");
 
 module.exports = {
   index: async (req, res, next) => {
@@ -19,15 +20,16 @@ module.exports = {
     }
   },
 
-  // viewCreate: async (req, res, next) => {
-  //   try {
-  //     res.render("admin/category/create", { title: "Add Category" });
-  //   } catch (error) {
-  //     req.flash("alertMessage", error.message);
-  //     req.flash("alertStatus", "danger");
-  //     res.redirect("/category");
-  //   }
-  // },
+  viewCreate: async (req, res, next) => {
+    try {
+      const banks = await Bank.find();
+      res.render("admin/payment/create", { title: "Add Payment", banks });
+    } catch (error) {
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/payment");
+    }
+  },
 
   // create: async (req, res, next) => {
   //   try {
