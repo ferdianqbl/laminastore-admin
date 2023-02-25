@@ -1,0 +1,60 @@
+<div class="card">
+  <div class="card-header">
+    <a href="/payment/create" class="btn btn-primary"><i class="nav-icon far fa-plus-square mr-2"></i>Add</a>
+  </div>
+
+  <div class="card-body">
+    <table id="example2" class="table table-bordered table-striped table-hover w-100">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Payment</th>
+          <th>Bank</th>
+          <th>Status</th>
+          <th>Time Added or Updated</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if(payments.length > 0){ %>
+        <% payments.forEach((item, index)=> { %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= item.type %></td>
+          <td>
+            <% item.banks.forEach(bank => { %>
+            <span class="badge badge-info"></span>
+            <% }) %>
+          </td>
+          <td><%= item.status %></td>
+          <td>
+            <span class="badge badge-<%= item.status === "active" ? "success" : "danger" %>"><%= item.status %></span>
+          </td>
+          <td>
+            <%= item.timestamp.toLocaleString('en-GB', {dateStyle:'full', timeStyle:'medium'}) %>
+          </td>
+          <td class="d-flex flex-wrap">
+            <form method="POST" action="/payment/status/<%= item._id %>?_method=PUT" class="d-inline-block m-1">
+              <button type="submit" class="btn btn-sm btn-outline-warning"><i class="nav-icon fas fa-trash"></i>
+                <%= item.status === "active" ? "Inactivate" : "Activate" %>
+              </button>
+            </form>
+            <a href="/payment/edit/<%= item._id %>" class="btn btn-sm btn-outline-info d-inline-block m-1"><i
+                class="nav-icon fas fa-pencil-alt"></i> Edit</a>
+            <form method="POST" action="/payment/delete/<%= item._id %>?_method=DELETE" class="d-inline-block m-1">
+              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="nav-icon fas fa-trash"></i>
+                Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+        <% } else { %>
+        <tr>
+          <td colspan="6" class="text-center">No data</td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+
+</div>

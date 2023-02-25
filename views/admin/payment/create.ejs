@@ -1,0 +1,98 @@
+<%- include("../../partials/header.ejs") %> <%-
+include("../../partials/navbar.ejs") %> <%-
+include("../../partials/sidebar.ejs") %>
+<div class="content-wrapper mt-5">
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1><%= title %></h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/voucher">Voucher</a></li>
+            <li class="breadcrumb-item active">Add</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Add New Voucher</h3>
+            </div>
+            <form action="/voucher/create" method="POST" enctype="multipart/form-data">
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="name">Game Name</label>
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Enter Game Name" required
+                    autocomplete="off" />
+                </div>
+                <div class="form-group">
+                  <label>Category</label>
+                  <select class="form-control select2 w-100" name="category" required>
+                    <option selected="selected" disabled>
+                      --- Select Category ---
+                    </option>
+                    <% categories.forEach(item => { %>
+                    <option value="<%= item._id %>"><%= item.name %></option>
+                    <% }) %>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Nominal</label>
+                  <div class="select2-purple">
+                    <select class="form-control select2 w-100" name="nominals" multiple required
+                      data-placeholder="Select Nominal">
+                      <% nominals.forEach(item => { %>
+                      <option value="<%= item._id %>">
+                        <%= item.coinName %> - <%= item.coinQuantity %> (Rp. <%= item.price %>)
+                      </option>
+                      <% }) %>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="custom-file mb-3">
+                    <input type="file" class="custom-file-input" id="thumbnail" name="thumbnail">
+                    <label class="custom-file-label" for="thumbnail">Choose file</label>
+                  </div>
+                  <img src="" alt="" id="preview" hidden>
+                </div>
+              </div>
+              <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Add</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<%- include("../../partials/footer.ejs") %> <%- include("../../partials/js.ejs")
+%>
+<script>
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        $(".custom-file-label").html(input.files[0].name);
+        $('#preview').removeAttr('hidden');
+        $('#preview').attr('src', e.target.result);
+        $('#preview').attr('width', '220');
+        $('#preview').attr('height', '320');
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+  $('#thumbnail').change(function () {
+    readURL(this);
+  });
+</script>
