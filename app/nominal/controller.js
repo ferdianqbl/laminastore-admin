@@ -85,12 +85,10 @@ module.exports = {
           "Nominal already exist with same coin name and coin quantity, delete the old one first"
         );
 
-      const timestamp = Date.now();
       await Nominal.findByIdAndUpdate(id, {
         coinName,
         coinQuantity,
         price,
-        timestamp,
       });
 
       req.flash("alertMessage", "Nominal successfully updated");

@@ -73,7 +73,6 @@ module.exports = {
         owner,
         bankName,
         accountNumber,
-        timestamp: Date.now(),
       });
       req.flash("alertMessage", "Bank successfully updated");
       req.flash("alertStatus", "success");

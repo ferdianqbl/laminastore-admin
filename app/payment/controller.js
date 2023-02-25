@@ -130,7 +130,6 @@ module.exports = {
 
       const status = payment.status === "active" ? "inactive" : "active";
       payment.status = status;
-      payment.timestamp = Date.now();
       await payment.save();
 
       req.flash("alertMessage", "Payment Status successfully updated");

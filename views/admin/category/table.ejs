@@ -9,7 +9,8 @@
         <tr>
           <th>No.</th>
           <th>Name</th>
-          <th>Time Added or Updated</th>
+          <th>Time Added</th>
+          <th>Time Updated</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -20,7 +21,10 @@
           <td><%= index + 1 %></td>
           <td><%= item.name %></td>
           <td>
-            <%= item.timestamp.toLocaleString('en-GB', {dateStyle:'full', timeStyle:'medium'}) %>
+            <%= item.createdAt.toLocaleString('en-GB', {dateStyle:'full', timeStyle:'medium'}) %>
+          </td>
+          <td>
+            <%= item.updatedAt.toLocaleString('en-GB', {dateStyle:'full', timeStyle:'medium'}) %>
           </td>
           <td class="d-flex flex-wrap">
             <a href="/category/edit/<%= item._id %>" class="btn btn-sm btn-outline-info d-inline-block m-1"><i
@@ -34,7 +38,7 @@
         <% }) %>
         <% } else { %>
         <tr>
-          <td colspan="4" class="text-center">No data</td>
+          <td colspan="5" class="text-center">No data</td>
         </tr>
         <% } %>
       </tbody>

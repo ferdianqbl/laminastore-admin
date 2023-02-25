@@ -11,7 +11,8 @@
           <th>Payment</th>
           <th>Bank</th>
           <th>Status</th>
-          <th>Time Added or Updated</th>
+          <th>Time Added</th>
+          <th>Time Updated</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -30,7 +31,10 @@
             <span class="badge badge-<%= item.status === "active" ? "success" : "danger" %>"><%= item.status %></span>
           </td>
           <td>
-            <%= item.timestamp.toLocaleString('en-GB', {dateStyle:'full', timeStyle:'medium'}) %>
+            <%= item.createdAt.toLocaleString('en-GB', {dateStyle:'full', timeStyle:'medium'}) %>
+          </td>
+          <td>
+            <%= item.updatedAt.toLocaleString('en-GB', {dateStyle:'full', timeStyle:'medium'}) %>
           </td>
           <td class="d-flex flex-wrap">
             <form method="POST" action="/payment/status/<%= item._id %>?_method=PUT" class="d-inline-block m-1">
@@ -49,7 +53,7 @@
         <% }) %>
         <% } else { %>
         <tr>
-          <td colspan="6" class="text-center">No data</td>
+          <td colspan="7" class="text-center">No data</td>
         </tr>
         <% } %>
       </tbody>

@@ -79,10 +79,8 @@ module.exports = {
       if (isCategoryExist.length > 0)
         throw new Error("Category already exist, delete the old one first");
 
-      const timestamp = Date.now();
       await Category.findByIdAndUpdate(id, {
         name,
-        timestamp,
       });
 
       req.flash("alertMessage", "Category successfully updated");
