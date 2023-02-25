@@ -23,10 +23,9 @@
           <td><%= item.type %></td>
           <td>
             <% item.banks.forEach(bank => { %>
-            <span class="badge badge-info"></span>
+            <span class="badge badge-info"><%= bank.owner %> - <%= bank.bankName %> - <%= bank.accountNumber %></span>
             <% }) %>
           </td>
-          <td><%= item.status %></td>
           <td>
             <span class="badge badge-<%= item.status === "active" ? "success" : "danger" %>"><%= item.status %></span>
           </td>

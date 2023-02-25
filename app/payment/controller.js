@@ -11,7 +11,10 @@ module.exports = {
         status: alertStatus,
       };
 
-      const payments = await Payment.find();
+      const payments = await Payment.find().populate(
+        "banks",
+        "owner bankName accountNumber"
+      );
       res.render("admin/payment", { title: "Payment", payments, alert });
     } catch (error) {
       req.flash("alertMessage", error.message);
@@ -31,28 +34,28 @@ module.exports = {
     }
   },
 
-  // create: async (req, res, next) => {
-  //   try {
-  //     const { name } = req.body;
+  create: async (req, res, next) => {
+    try {
+      const { type, banks } = req.body;
 
-  //     if (!name) throw new Error("Name cannot be empty");
-  //     const isCategoryExist = await Category.find({
-  //       name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase(),
-  //     });
-  //     if (isCategoryExist.length > 0) throw new Error("Category already exist");
-  //     const category = new Category({ name });
-  //     await category.save();
+      if (!type) throw new Error("Payment Type cannot be empty");
+      if (!banks) throw new Error("Bank cannot be empty");
 
-  //     req.flash("alertMessage", "Category successfully created");
-  //     req.flash("alertStatus", "success");
+      await Payment.create({
+        type,
+        banks,
+      });
 
-  //     res.redirect("/category");
-  //   } catch (error) {
-  //     req.flash("alertMessage", error.message);
-  //     req.flash("alertStatus", "danger");
-  //     res.redirect("/category");
-  //   }
-  // },
+      req.flash("alertMessage", "Payment successfully created");
+      req.flash("alertStatus", "success");
+
+      res.redirect("/payment");
+    } catch (error) {
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/payment");
+    }
+  },
 
   // viewEdit: async (req, res, next) => {
   //   try {
