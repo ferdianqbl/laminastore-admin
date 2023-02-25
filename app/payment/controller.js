@@ -119,4 +119,27 @@ module.exports = {
       res.redirect("/payment");
     }
   },
+
+  status: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+
+      const payment = await Payment.findById(id);
+
+      if (!payment) throw new Error("Payment not found");
+
+      const status = payment.status === "active" ? "inactive" : "active";
+      payment.status = status;
+      payment.timestamp = Date.now();
+      await payment.save();
+
+      req.flash("alertMessage", "Payment Status successfully updated");
+      req.flash("alertStatus", "success");
+      res.redirect("/payment");
+    } catch (error) {
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/payment");
+    }
+  },
 };
