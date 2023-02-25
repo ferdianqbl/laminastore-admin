@@ -57,20 +57,29 @@ module.exports = {
     }
   },
 
-  // viewEdit: async (req, res, next) => {
-  //   try {
-  //     const { id } = req.params;
-  //     const category = await Category.findById(id);
+  viewEdit: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const payment = await Payment.findById(id).populate(
+        "banks",
+        "owner bankName accountNumber"
+      );
 
-  //     if (!category) throw new Error("Category not found");
+      if (!payment) throw new Error("Payment not found");
 
-  //     res.render("admin/category/edit", { title: "Edit Category", category });
-  //   } catch (error) {
-  //     req.flash("alertMessage", error.message);
-  //     req.flash("alertStatus", "danger");
-  //     res.redirect("/category");
-  //   }
-  // },
+      const banks = await Bank.find();
+
+      res.render("admin/payment/edit", {
+        title: "Edit Payment",
+        payment,
+        banks,
+      });
+    } catch (error) {
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/payment");
+    }
+  },
 
   // edit: async (req, res, next) => {
   //   try {
