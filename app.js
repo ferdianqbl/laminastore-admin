@@ -7,6 +7,7 @@ const methodOverride = require("method-override");
 const session = require("express-session");
 const flash = require("connect-flash");
 
+const userRouter = require("./app/user/router");
 const dashboardRouter = require("./app/dashboard/router");
 const categoryRouter = require("./app/category/router");
 const nominalRouter = require("./app/nominal/router");
@@ -42,7 +43,8 @@ app.use(
 );
 
 // router
-app.use("/", dashboardRouter);
+app.use("/", userRouter);
+app.use("/dashboard", dashboardRouter);
 app.use("/category", categoryRouter);
 app.use("/nominal", nominalRouter);
 app.use("/voucher", voucherRouter);
