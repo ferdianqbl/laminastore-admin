@@ -105,18 +105,18 @@ module.exports = {
     }
   },
 
-  // remove: async (req, res, next) => {
-  //   try {
-  //     const { id } = req.params;
-  //     await Category.findByIdAndDelete(id);
+  remove: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      await Payment.findByIdAndDelete(id);
 
-  //     req.flash("alertMessage", "Category successfully deleted");
-  //     req.flash("alertStatus", "success");
-  //     res.redirect("/category");
-  //   } catch (error) {
-  //     req.flash("alertMessage", error.message);
-  //     req.flash("alertStatus", "danger");
-  //     res.redirect("/category");
-  //   }
-  // },
+      req.flash("alertMessage", "Payment successfully deleted");
+      req.flash("alertStatus", "success");
+      res.redirect("/payment");
+    } catch (error) {
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/payment");
+    }
+  },
 };
