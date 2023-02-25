@@ -11,7 +11,9 @@ module.exports = {
         status: alertStatus,
       };
 
-      res.render("admin/user/login", { title: "Login", alert });
+      if (req.session.user === null || req.session.user === undefined)
+        res.render("admin/user/login", { title: "Login", alert });
+      else res.redirect("/dashboard");
     } catch (error) {
       req.flash("alertMessage", error.message);
       req.flash("alertStatus", "danger");
@@ -28,6 +30,15 @@ module.exports = {
 
       const isPasswordMatch = await bcrypt.compare(password, user.password);
       if (!isPasswordMatch) throw new Error("Password incorrect");
+
+      req.session.user = {
+        id: user._id,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        status: user.status,
+      };
 
       res.redirect("/dashboard");
     } catch (error) {

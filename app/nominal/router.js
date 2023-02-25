@@ -8,7 +8,9 @@ const {
   edit,
 } = require("./controller");
 const router = express.Router();
+const { isLogin } = require("../../middleware/auth");
 
+router.use(isLogin);
 router.get("/", index);
 router.get("/create", viewCreate);
 router.post("/create", create);
