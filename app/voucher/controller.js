@@ -160,9 +160,10 @@ module.exports = {
       const status = voucher.status === "active" ? "inactive" : "active";
 
       voucher.status = status;
+      voucher.timestamp = Date.now();
       await voucher.save();
 
-      await req.flash("alertMessage", "Voucher Status successfully updated");
+      req.flash("alertMessage", "Voucher Status successfully updated");
       req.flash("alertStatus", "success");
       res.redirect("/voucher");
     } catch (error) {
