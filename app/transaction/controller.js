@@ -24,25 +24,20 @@ module.exports = {
     }
   },
 
-  // status: async (req, res, next) => {
-  //   try {
-  //     const { id } = req.params;
+  status: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.query;
 
-  //     const payment = await Payment.findById(id);
+      await Transaction.findByIdAndUpdate(id, { status });
 
-  //     if (!payment) throw new Error("Payment not found");
-
-  //     const status = payment.status === "active" ? "inactive" : "active";
-  //     payment.status = status;
-  //     await payment.save();
-
-  //     req.flash("alertMessage", "Payment Status successfully updated");
-  //     req.flash("alertStatus", "success");
-  //     res.redirect("/payment");
-  //   } catch (error) {
-  //     req.flash("alertMessage", error.message);
-  //     req.flash("alertStatus", "danger");
-  //     res.redirect("/payment");
-  //   }
-  // },
+      req.flash("alertMessage", "Transaction Status successfully updated");
+      req.flash("alertStatus", "success");
+      res.redirect("/transaction");
+    } catch (error) {
+      req.flash("alertMessage", error.message);
+      req.flash("alertStatus", "danger");
+      res.redirect("/transaction");
+    }
+  },
 };

@@ -45,11 +45,11 @@
           <td>
             <% if(item.status === "pending") { %>
             <span class="badge badge-warning"><%= item.status %></span>
-            <% } else if(item.status === " active") { %>
+            <% } else if(item.status === "success") { %>
             <span class="badge badge-success"><%= item.status %></span>
-            <% }else {%>
+            <% } else {%>
             <span class="badge badge-danger"><%= item.status %></span>
-            <% }%>
+            <% } %>
           </td>
           <td>
             <%= item.createdAt.toLocaleString('en-GB', {dateStyle:'full', timeStyle:'medium'}) %>
@@ -58,12 +58,14 @@
             <%= item.updatedAt.toLocaleString('en-GB', {dateStyle:'full', timeStyle:'medium'}) %>
           </td>
           <td class=" d-flex flex-wrap">
-            <form method="POST" action="/transaction/status/<%= item._id %>?_method=PUT" class="d-inline-block m-1">
+            <form method="POST" action="/transaction/status/<%= item._id %>?status=success&_method=PUT"
+              class="d-inline-block m-1">
               <button type="submit" class="btn btn-sm btn-outline-info"><i class="nav-icon fas fa-check"></i>
                 Accept</button>
             </form>
 
-            <form method="POST" action="/transaction/status/<%= item._id %>?_method=PUT" class="d-inline-block m-1">
+            <form method="POST" action="/transaction/status/<%= item._id %>?status=failed&_method=PUT"
+              class="d-inline-block m-1">
               <button type="submit" class="btn btn-sm btn-outline-danger"><i class="nav-icon fas fa-times-circle"></i>
                 Reject</button>
             </form>
