@@ -8,14 +8,74 @@
       <thead>
         <tr>
           <th>No.</th>
-          <th>Payment</th>
-          <th>Bank</th>
+          <th>Game</th>
+          <th>Player</th>
+          <th>Item</th>
+          <th>Price Total</th>
           <th>Status</th>
           <th>Time Added</th>
           <th>Time Updated</th>
           <th>Actions</th>
         </tr>
       </thead>
+      <tbody>
+        <% if(transactions.length > 0){ %>
+        <% transactions.forEach((item, index)=> { %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td>
+            <ul class="list-inline">
+              <li class="list-inline-item">
+                <img src="http://localhost:8000/uploads/voucher/<%= item?.voucherTopupHistory?.thumbnail %>"
+                  alt="thumbnail" width="90" height="160">
+              </li>
+            </ul>
+            <%= item?.voucherTopupHistory?.gameName %>
+            <br>
+            <%= item?.voucherTopupHistory?.category %>
+          </td>
+          <td><%= item?.player?.name ?? "-" %></td>
+          <td>
+            <%= item?.voucherTopupHistory?.coinQuantity %>
+            <%= item?.voucherTopupHistory?.coinName %>
+          </td>
+          <td>
+            <%= item?.value %>
+          </td>
+          <td>
+            <% if(item.status === "pending") { %>
+            <span class="badge badge-warning"><%= item.status %></span>
+            <% } else if(item.status === " active") { %>
+            <span class="badge badge-success"><%= item.status %></span>
+            <% }else {%>
+            <span class="badge badge-danger"><%= item.status %></span>
+            <% }%>
+          </td>
+          <td>
+            <%= item.createdAt.toLocaleString('en-GB', {dateStyle:'full', timeStyle:'medium'}) %>
+          </td>
+          <td>
+            <%= item.updatedAt.toLocaleString('en-GB', {dateStyle:'full', timeStyle:'medium'}) %>
+          </td>
+          <td class=" d-flex flex-wrap">
+            <form method="POST" action="/transaction/status/<%= item._id %>?_method=PUT" class="d-inline-block m-1">
+              <button type="submit" class="btn btn-sm btn-outline-info"><i class="nav-icon fas fa-check"></i>
+                Accept</button>
+            </form>
+
+            <form method="POST" action="/transaction/status/<%= item._id %>?_method=PUT" class="d-inline-block m-1">
+              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="nav-icon fas fa-times-circle"></i>
+                Reject</button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+        <% } else { %>
+        <tr>
+          <td colspan="9" class="text-center">No data</td>
+        </tr>
+        <% } %>
+      </tbody>
     </table>
   </div>
 
