@@ -10,7 +10,7 @@ module.exports = {
         status: alertStatus,
       };
 
-      const transactions = await Transaction.find();
+      const transactions = await Transaction.find().populate("player");
       res.render("admin/transaction", {
         title: "Transaction",
         transactions,
