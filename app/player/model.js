@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const playerSchema = new mongoose.Schema(
   {
@@ -16,6 +17,7 @@ const playerSchema = new mongoose.Schema(
     email: {
       type: String,
       require: [true, "Email is required"],
+      unique: true,
     },
     password: {
       type: String,
@@ -50,5 +52,38 @@ const playerSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Username validation
+playerSchema.path("username").validate(async function (value) {
+  try {
+    const count = await this.model("Player").countDocuments({
+      username: value,
+    });
+    return !count;
+  } catch (error) {
+    throw new Error(error);
+  }
+}, "Username already exists");
+
+// Email validation
+playerSchema.path("email").validate(async function (value) {
+  try {
+    const count = await this.model("Player").countDocuments({ email: value });
+    return !count;
+  } catch (error) {
+    throw new Error(error);
+  }
+}, "Email already exists");
+
+// Hash password before saving to database
+playerSchema.pre("save", function (next) {
+  const player = this;
+  if (!player.isModified("password")) return next();
+  bcrypt.hash(player.password, 10, (err, hash) => {
+    if (err) return next(err);
+    player.password = hash;
+    next();
+  });
+});
 
 module.exports = mongoose.model("Player", playerSchema);
