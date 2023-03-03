@@ -56,12 +56,14 @@ module.exports = {
 
           const token = jwt.sign(
             {
-              id: player._id,
-              email: player.email,
-              name: player.name,
-              avatar: player.avatar,
-              username: player.username,
-              phoneNumber: player.phoneNumber,
+              player: {
+                id: player._id,
+                email: player.email,
+                name: player.name,
+                avatar: player.avatar,
+                username: player.username,
+                phoneNumber: player.phoneNumber,
+              },
             },
             jwtKey.secret,
             { expiresIn: jwtKey.expiresIn }

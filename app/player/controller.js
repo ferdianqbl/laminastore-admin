@@ -4,6 +4,7 @@ const Category = require("../category/model");
 const Nominal = require("../nominal/model");
 const Payment = require("../payment/model");
 const Bank = require("../bank/model");
+const Transaction = require("../transaction/model");
 
 module.exports = {
   landingPage: async (req, res, next) => {
@@ -92,25 +93,27 @@ module.exports = {
           price: res_nominal._doc.price,
         },
         paymentHistory: {
-          owner: res_payment._doc.name,
+          owner: res_bank._doc.owner,
           type: res_payment._doc.type,
-          bankName: res_payment._doc.bankName,
-          accountNumber: res_payment._doc.accountNumber,
+          bankName: res_bank._doc.bankName,
+          accountNumber: res_bank._doc.accountNumber,
         },
         name: bankOwner,
         accountName: accountUser,
         tax,
         value,
-        // player:
+        player: req.player._id,
         userHistory: {
-          name: res_voucher._doc.user?._id,
+          name: res_voucher._doc.user?.name,
           phone: res_voucher._doc.user?.phone,
         },
         category: res_voucher._doc.category?._id,
         user: res_voucher._doc.user?._id,
       };
 
-      res.status(201).json({ data: payload });
+      const transaction = await Transaction.create(payload);
+
+      res.status(201).json({ data: transaction });
     } catch (error) {
       res.status(500).json({
         error: 1,
