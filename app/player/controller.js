@@ -45,4 +45,13 @@ module.exports = {
       });
     }
   },
+  checkout: async (req, res, next) => {
+    try {
+    } catch (error) {
+      res.status(500).json({
+        error: 1,
+        message: error.message || "Internal server error",
+      });
+    }
+  },
 };
