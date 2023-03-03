@@ -1,6 +1,9 @@
 // const Player = require('./model');
 const Voucher = require("../voucher/model");
 const Category = require("../category/model");
+const Nominal = require("../nominal/model");
+const Payment = require("../payment/model");
+const Bank = require("../bank/model");
 
 module.exports = {
   landingPage: async (req, res, next) => {
@@ -47,6 +50,32 @@ module.exports = {
   },
   checkout: async (req, res, next) => {
     try {
+      const {
+        accountUser,
+        bankOwner,
+        nominalId,
+        voucherId,
+        paymentId,
+        bankId,
+      } = req.body;
+
+      const res_voucher = await Voucher.findById(voucherId)
+        .select("_id name category thumbnail user")
+        .populate("category")
+        .populate("user");
+      if (!res_voucher)
+        return res.status(404).json({ message: "Voucher not found" });
+
+      const res_nominal = await Nominal.findById(nominalId);
+      if (!res_nominal)
+        return res.status(404).json({ message: "Nominal not found" });
+
+      const res_payment = await Payment.findById(paymentId);
+      if (!res_payment)
+        return res.status(404).json({ message: "Payment not found" });
+
+      const res_bank = await Bank.findById(bankId);
+      if (!res_bank) return res.status(404).json({ message: "Bank not found" });
     } catch (error) {
       res.status(500).json({
         error: 1,
