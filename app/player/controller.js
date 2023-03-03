@@ -76,6 +76,41 @@ module.exports = {
 
       const res_bank = await Bank.findById(bankId);
       if (!res_bank) return res.status(404).json({ message: "Bank not found" });
+
+      const tax = res_nominal._doc.price * 0.1;
+      const value = res_nominal._doc.price - tax;
+
+      const payload = {
+        voucherTopupHistory: {
+          gameName: res_voucher._doc.name,
+          category: res_voucher._doc.category
+            ? res_voucher._doc.category.name
+            : "",
+          thumbnail: res_voucher._doc.thumbnail,
+          coinName: res_nominal._doc.coinName,
+          coinQuantity: res_nominal._doc.coinQuantity,
+          price: res_nominal._doc.price,
+        },
+        paymentHistory: {
+          owner: res_payment._doc.name,
+          type: res_payment._doc.type,
+          bankName: res_payment._doc.bankName,
+          accountNumber: res_payment._doc.accountNumber,
+        },
+        name: bankOwner,
+        accountName: accountUser,
+        tax,
+        value,
+        // player:
+        userHistory: {
+          name: res_voucher._doc.user?._id,
+          phone: res_voucher._doc.user?.phone,
+        },
+        category: res_voucher._doc.category?._id,
+        user: res_voucher._doc.user?._id,
+      };
+
+      res.status(201).json({ data: payload });
     } catch (error) {
       res.status(500).json({
         error: 1,
