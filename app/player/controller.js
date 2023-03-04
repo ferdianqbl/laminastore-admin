@@ -221,7 +221,7 @@ module.exports = {
         name: req.player.name,
         username: req.player.username,
         email: req.player.email,
-        phone: req.player.phoneNumber,
+        phoneNumber: req.player.phoneNumber,
         avatar: req.player.avatar ? req.player.avatar : "",
       };
 
@@ -235,4 +235,11 @@ module.exports = {
       });
     }
   },
+  editProfile: async (req, res, next) => {
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
 };
