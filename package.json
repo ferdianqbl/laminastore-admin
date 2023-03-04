@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "dev": "env-cmd -f .env.local nodemon ./bin/www",
+    "prod": "env-cmd -f .env nodemon ./bin/www"
   },
   "dependencies": {
     "admin-lte": "^3.2.0",
@@ -14,6 +16,7 @@
     "debug": "~2.6.9",
     "dotenv": "^16.0.3",
     "ejs": "~2.6.1",
+    "env-cmd": "^10.1.0",
     "express": "~4.16.1",
     "express-session": "^1.17.3",
     "http-errors": "~1.6.3",
