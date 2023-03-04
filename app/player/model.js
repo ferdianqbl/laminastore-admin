@@ -56,9 +56,8 @@ const playerSchema = new mongoose.Schema(
 // Username validation
 playerSchema.path("username").validate(async function (value) {
   try {
-    const count = await this.model("Player").countDocuments({
-      username: value,
-    });
+    const count = await this.model("Player").find({ username: value });
+
     return !count;
   } catch (error) {
     throw new Error(error);
