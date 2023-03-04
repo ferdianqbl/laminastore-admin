@@ -7,12 +7,14 @@ const {
   checkout,
   history,
   historyDetail,
+  dashboard,
 } = require("./controller");
 
 router.get("/landing-page", landingPage);
 router.get("/:id/detail/", detailPage);
 router.get("/category", category);
 router.get("/history", isLoginPlayer, history);
+router.get("/dashboard", isLoginPlayer, dashboard);
 router.get("/history/:id/detail", isLoginPlayer, historyDetail);
 router.post("/checkout", isLoginPlayer, checkout);
 

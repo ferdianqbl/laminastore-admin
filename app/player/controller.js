@@ -178,4 +178,40 @@ module.exports = {
       });
     }
   },
+  dashboard: async (req, res, next) => {
+    try {
+      const categoryValueCount = await Transaction.aggregate([
+        { $match: { player: req.player._id } },
+        {
+          $group: {
+            _id: "$category",
+            value: { $sum: "$value" },
+          },
+        },
+      ]);
+
+      const categories = await Category.find();
+
+      categories.forEach((category) => {
+        categoryValueCount.forEach((item) => {
+          if (item._id.toString() == category._id.toString()) {
+            item.name = category.name;
+          }
+        });
+      });
+
+      const history = await Transaction.find({ player: req.player._id })
+        .populate("category")
+        .sort({ createdAt: "desc" });
+
+      res
+        .status(200)
+        .json({ data: history, count_category_value: categoryValueCount });
+    } catch (error) {
+      res.status(500).json({
+        error: 1,
+        message: error.message || "Internal server error",
+      });
+    }
+  },
 };
