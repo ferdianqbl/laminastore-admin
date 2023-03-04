@@ -1,10 +1,13 @@
-// const Player = require('./model');
+const Player = require("./model");
 const Voucher = require("../voucher/model");
 const Category = require("../category/model");
 const Nominal = require("../nominal/model");
 const Payment = require("../payment/model");
 const Bank = require("../bank/model");
 const Transaction = require("../transaction/model");
+
+const { unlinkSync, existsSync } = require("fs");
+const { rootPath } = require("../../config/env");
 
 module.exports = {
   landingPage: async (req, res, next) => {
@@ -237,9 +240,58 @@ module.exports = {
   },
   editProfile: async (req, res, next) => {
     try {
-      
+      const {
+        name = "",
+        email = "",
+        phoneNumber = "",
+        username = "",
+      } = req.body;
+      const payload = {};
+
+      if (name.length) payload.name = name;
+      if (email.length) payload.email = email;
+      if (phoneNumber.length) payload.phoneNumber = phoneNumber;
+      if (username.length) payload.username = username;
+
+      let player = await Player.findById(req.player._id);
+
+      if (req.file) {
+        if (existsSync(`${rootPath}/public/uploads/player/${player.avatar}`))
+          unlinkSync(`${rootPath}/public/uploads/player/${player.avatar}`);
+        payload.avatar = req.file.filename;
+      }
+
+      player = await Player.findByIdAndUpdate(req.player._id, payload, {
+        new: true,
+        runValidators: true,
+        // context: "query",
+      });
+
+      // console.log(player);
+
+      res.status(200).json({
+        data: {
+          id: player._id,
+          name: player.name,
+          username: player.username,
+          email: player.email,
+          phoneNumber: player.phoneNumber,
+          avatar: player.avatar ? player.avatar : "",
+        },
+        // payload,
+      });
     } catch (error) {
-      
+      if (error.name === "ValidationError") {
+        return res.status(400).json({
+          error: 1,
+          message: error.message,
+          fields: error.errors,
+        });
+      }
+      res.status(500).json({
+        error: 1,
+        message: error.message || "Internal server error",
+      });
     }
-  }
+  },
 };
