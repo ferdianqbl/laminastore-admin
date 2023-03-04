@@ -214,4 +214,25 @@ module.exports = {
       });
     }
   },
+  profile: async (req, res, next) => {
+    try {
+      const player = {
+        id: req.player._id,
+        name: req.player.name,
+        username: req.player.username,
+        email: req.player.email,
+        phone: req.player.phoneNumber,
+        avatar: req.player.avatar ? req.player.avatar : "",
+      };
+
+      res.status(200).json({
+        data: player,
+      });
+    } catch (error) {
+      res.status(500).json({
+        error: 1,
+        message: error.message || "Internal server error",
+      });
+    }
+  },
 };
