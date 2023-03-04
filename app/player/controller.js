@@ -162,4 +162,20 @@ module.exports = {
       });
     }
   },
+  historyDetail: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const history = await Transaction.findById(id);
+
+      if (!history)
+        return res.status(404).json({ message: "History not found" });
+
+      res.status(200).json({ data: history });
+    } catch (error) {
+      res.status(500).json({
+        error: 1,
+        message: error.message || "Internal server error",
+      });
+    }
+  },
 };
