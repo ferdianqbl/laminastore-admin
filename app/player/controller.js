@@ -121,4 +121,45 @@ module.exports = {
       });
     }
   },
+  history: async (req, res, next) => {
+    try {
+      const { status = "" } = req.query;
+      // console.log(status.length);
+      let criteria = {};
+      if (status)
+        criteria = {
+          ...criteria,
+          status: { $regex: `${status}`, $options: "i" },
+        };
+
+      if (req.player._id)
+        criteria = {
+          ...criteria,
+          player: req.player._id,
+        };
+
+      const history = await Transaction.find(criteria);
+
+      const total_value = await Transaction.aggregate([
+        { $match: criteria },
+        {
+          $group: {
+            _id: null,
+            value: { $sum: "$value" },
+          },
+        },
+      ]);
+
+      res.status(200).json({
+        total_value: total_value.length > 0 ? total_value[0].value : 0,
+        dataLength: history.length,
+        data: history,
+      });
+    } catch (error) {
+      res.status(500).json({
+        error: 1,
+        message: error.message || "Internal server error",
+      });
+    }
+  },
 };
