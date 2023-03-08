@@ -13,7 +13,7 @@ module.exports = {
 
       res.render("index", {
         title: "Home",
-        username: req.session.user.username,
+        // username: req.session.user.username,
         transactions,
         vouchers,
         categories,

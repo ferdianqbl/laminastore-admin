@@ -28,7 +28,7 @@ module.exports = {
     try {
       res.render("admin/category/create", {
         title: "Add Category",
-        username: req.session.user.username,
+        // username: req.session.user.username,
       });
     } catch (error) {
       req.flash("alertMessage", error.message);
@@ -70,7 +70,7 @@ module.exports = {
       res.render("admin/category/edit", {
         title: "Edit Category",
         category,
-        username: req.session.user.username,
+        // username: req.session.user.username,
       });
     } catch (error) {
       req.flash("alertMessage", error.message);

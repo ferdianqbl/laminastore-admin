@@ -19,7 +19,7 @@ module.exports = {
         title: "Payment",
         payments,
         alert,
-        username: req.session.user.username,
+        // username: req.session.user.username,
       });
     } catch (error) {
       req.flash("alertMessage", error.message);
@@ -34,7 +34,7 @@ module.exports = {
       res.render("admin/payment/create", {
         title: "Add Payment",
         banks,
-        username: req.session.user.username,
+        // username: req.session.user.username,
       });
     } catch (error) {
       req.flash("alertMessage", error.message);
@@ -82,7 +82,7 @@ module.exports = {
         title: "Edit Payment",
         payment,
         banks,
-        username: req.session.user.username,
+        // username: req.session.user.username,
       });
     } catch (error) {
       req.flash("alertMessage", error.message);
