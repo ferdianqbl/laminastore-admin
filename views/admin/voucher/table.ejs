@@ -31,7 +31,8 @@
               <%=(nominal.price) %></span>
             <% }) %>
           </td>
-          <td><img src="/uploads/voucher/<%= item?.thumbnail ?? '-' %>" alt="" width="90" height="160"></td>
+          <td><img src="https://laminastore-admin.vercel.app/uploads/voucher/<%= item?.thumbnail ?? '-' %>" alt=""
+              width="90" height="160"></td>
           <td>
             <span class="badge badge-<%= item.status === "active" ? "success" : "danger" %>"><%= item.status %></span>
           </td>

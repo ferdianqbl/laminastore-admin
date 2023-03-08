@@ -32,7 +32,14 @@ app.use(
     secret: "keyboard cat",
     resave: false,
     saveUninitialized: true,
-    cookie: {},
+    proxy: true,
+    name: "MyCoolWebAppCookieName",
+
+    cookie: {
+      secure: true, // required for cookies to work on HTTPS
+      httpOnly: false,
+      sameSite: "none",
+    },
     maxAge: new Date(Date.now() + 60 * 60 * 1000),
   })
 );
