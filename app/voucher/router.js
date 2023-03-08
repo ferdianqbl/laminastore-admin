@@ -12,7 +12,7 @@ const {
 const router = express.Router();
 const { isLogin } = require("../../middleware/auth");
 
-router.use(isLogin);
+// router.use(isLogin);
 router.get("/", index);
 router.get("/create", viewCreate);
 router.post("/create", uploadVoucher.single("thumbnail"), create);
