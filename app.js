@@ -33,6 +33,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: {},
+    expires: new Date(Date.now() + 60 * 60 * 1000),
   })
 );
 app.use(flash());
