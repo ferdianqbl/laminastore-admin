@@ -32,10 +32,19 @@ module.exports = {
         .populate("nominals")
         .populate("user", "_id name phone");
 
+      const payments = await Payment.find();
+
       if (!voucher)
         return res.status(404).json({ message: "Voucher not found" });
+      if (!payments)
+        return res.status(404).json({ message: "Payment not found" });
 
-      res.status(200).json({ data: voucher });
+      res.status(200).json({
+        data: {
+          detail: voucher,
+          payments,
+        },
+      });
     } catch (error) {
       res.status(500).json({
         message: error.message || "Internal Server Error",
