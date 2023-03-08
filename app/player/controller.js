@@ -32,7 +32,7 @@ module.exports = {
         .populate("nominals")
         .populate("user", "_id name phone");
 
-      const payments = await Payment.find();
+      const payments = await Payment.find().populate('banks');
 
       if (!voucher)
         return res.status(404).json({ message: "Voucher not found" });
