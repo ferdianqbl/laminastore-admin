@@ -23,7 +23,7 @@ module.exports = {
         title: "Voucher",
         vouchers,
         alert,
-        username: req.session.user.username,
+        // username: req.session.user.username,
       });
     } catch (error) {
       req.flash("alertMessage", error.message);
@@ -43,7 +43,7 @@ module.exports = {
         title: "Add Voucher",
         categories,
         nominals,
-        username: req.session.user.username,
+        // username: req.session.user.username,
       });
     } catch (error) {
       req.flash("alertMessage", error.message);
@@ -95,7 +95,7 @@ module.exports = {
         voucher,
         categories,
         nominals,
-        username: req.session.user.username,
+        // username: req.session.user.username,
       });
     } catch (error) {
       req.flash("alertMessage", error.message);
