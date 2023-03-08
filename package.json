@@ -3,9 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
-    "dev": "env-cmd -f .env.local nodemon ./bin/www",
-    "prod": "env-cmd -f .env nodemon ./bin/www"
+    "dev": "env-cmd -f .env.local nodemon index.js",
+    "prod": "env-cmd -f .env nodemon index.js"
   },
   "dependencies": {
     "admin-lte": "^3.2.0",
@@ -26,6 +25,10 @@
     "morgan": "~1.9.1",
     "multer": "^1.4.5-lts.1"
   },
+  "keywords": [
+    "express-js",
+    "vercel"
+  ],
   "devDependencies": {
     "nodemon": "^2.0.20"
   }
