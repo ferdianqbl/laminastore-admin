@@ -22,8 +22,7 @@ const playerSchema = new mongoose.Schema(
     password: {
       type: String,
       require: [true, "Password is required"],
-      minlength: [8, "Password cannot be less than 8 characters"],
-      maxlength: [20, "Password cannot be more than 20 characters"],
+      minlength: [6, "Password cannot be less than 8 characters"],
     },
     phoneNumber: {
       type: String,
@@ -56,7 +55,9 @@ const playerSchema = new mongoose.Schema(
 // Username validation
 playerSchema.path("username").validate(async function (value) {
   try {
-    const count = await this.model("Player").find({ username: value });
+    const count = await this.model("Player").countDocuments({
+      username: value,
+    });
 
     return !count;
   } catch (error) {

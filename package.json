@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "env-cmd -f .env.local nodemon index.js",
+    "dev": "env-cmd -f .env.local nodemon ./bin/www",
     "prod": "env-cmd -f .env nodemon index.js"
   },
   "dependencies": {
