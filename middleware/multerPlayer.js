@@ -4,7 +4,7 @@ const fs = require("fs");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const dir = "/tmp/public/uploads/player";
+    const dir = path.resolve(__dirname, "../public/uploads/player");
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
       console.log("Directory is created.");
