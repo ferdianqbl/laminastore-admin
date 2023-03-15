@@ -32,7 +32,7 @@ module.exports = {
         .populate("nominals")
         .populate("user", "_id name phone");
 
-      const payments = await Payment.find().populate('banks');
+      const payments = await Payment.find().populate("banks");
 
       if (!voucher)
         return res.status(404).json({ message: "Voucher not found" });
@@ -91,7 +91,7 @@ module.exports = {
       if (!res_bank) return res.status(404).json({ message: "Bank not found" });
 
       const tax = res_nominal._doc.price * 0.1;
-      const value = res_nominal._doc.price - tax;
+      const value = res_nominal._doc.price + tax;
 
       const payload = {
         voucherTopupHistory: {
